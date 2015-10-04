@@ -13,6 +13,10 @@ class RenderSystem {
     this._onResize();
   }
 
+  tick(dt) {
+    this._renderer.render(this.scene, this._camera);
+  }
+
   _onResize() {
     this._renderer.setSize(window.innerWidth, window.innerHeight);
     this._camera.aspect = window.innerWidth / window.innerHeight;
