@@ -1,0 +1,11 @@
+{
+  "name": "labyrinth",
+  "version": "0.0.0",
+  "authors": [
+    "Chris Pettitt"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "stats.js": "*"
+  }
+}
