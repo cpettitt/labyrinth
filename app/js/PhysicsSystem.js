@@ -28,6 +28,7 @@ class PhysicsSystem {
   _checkCollisions(playerBBox) {
     // TODO smarter broadphase
     const gs = this._gameState;
+    const collisionVectors = [];
     for (let x = 0; x < gs.width; ++x) {
       for (let y = 0; y < gs.height; ++y) {
         const cellData = gs.getCellData(x, y);
@@ -35,10 +36,19 @@ class PhysicsSystem {
         if (!cellData.isWalkable) {
           const overlap = this._checkAABBCollision(cellData.bbox, playerBBox);
           if (overlap) {
+            collisionVectors.push(overlap);
             cellData.isCollision = true;
           }
         }
       }
+    }
+
+    if (collisionVectors.length) {
+      const resolution = new THREE.Vector2();
+      collisionVectors.forEach(v => {
+        resolution.add(v);
+      });
+      this._gameState.player.position.sub(resolution);
     }
   }
 
@@ -50,7 +60,7 @@ class PhysicsSystem {
     const centerDelta = boxA.center().sub(boxB.center());
     const overlap = boxA.size().add(boxB.size())
                         .multiplyScalar(0.5)
-                        .sub(vec2Abs(centerDelta));
+                        .sub(vec2Abs(centerDelta.clone()));
 
     if (overlap.x <= 0 || overlap.y <= 0) {
       return;
