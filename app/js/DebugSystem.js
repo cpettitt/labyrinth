@@ -1,16 +1,14 @@
 import { EventEmitter } from "events";
+import Mousetrap from "mousetrap";
 
 class DebugSystem extends EventEmitter {
   constructor() {
     super();
     this.isEnabled = false;
 
-    // TODO bind for enable / disable should come from keyboard system
-    window.addEventListener("keydown", event => {
-      if (event.keyCode === 192 && event.shiftKey) {
-        this.toggleEnabled();
-        event.preventDefault();
-      }
+    Mousetrap.bind("~", () => {
+      this.toggleEnabled();
+      return false;
     });
   }
 
