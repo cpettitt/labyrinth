@@ -9,7 +9,11 @@ class GameState {
 
     const player = this.player = {
       position: new THREE.Vector2(),
-      rotation: 0
+      rotation: 0,
+      velocity: 0,
+      moveRate: 2,
+      angularVelocity: 0,
+      turnRate: 2 * Math.PI
     };
 
     this._cellData = new Array(this.width);

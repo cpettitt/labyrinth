@@ -12,6 +12,8 @@ class DebugSystem extends EventEmitter {
     });
   }
 
+  tick(dt) {}
+
   toggleEnabled() {
     if (this.isEnabled) {
       this.disable();
