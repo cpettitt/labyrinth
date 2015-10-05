@@ -21,7 +21,7 @@ const gameState = new GameState(mapStr);
 const renderSystem = new RenderSystem(gameState);
 const inputSystem = new InputSystem(gameState);
 const physicsSystem = new PhysicsSystem(gameState);
-const debugSystem = new DebugSystem();
+const debugSystem = new DebugSystem(gameState);
 
 const stats = new Stats();
 

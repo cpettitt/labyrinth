@@ -1,18 +1,17 @@
 import { EventEmitter } from "events";
-import Mousetrap from "mousetrap";
 
 class DebugSystem extends EventEmitter {
-  constructor() {
+  constructor(gameState) {
     super();
+    this._input = gameState.input;
     this.isEnabled = false;
-
-    Mousetrap.bind("~", () => {
-      this.toggleEnabled();
-      return false;
-    });
   }
 
-  tick(dt) {}
+  tick(dt) {
+    if (this._input.debug) {
+      this.toggleEnabled();
+    }
+  }
 
   toggleEnabled() {
     if (this.isEnabled) {

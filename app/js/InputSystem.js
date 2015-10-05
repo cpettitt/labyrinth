@@ -1,23 +1,41 @@
+import forEach from "lodash/collection/forEach";
 import Mousetrap from "mousetrap";
 
 class InputSystem {
   constructor(gameState) {
     this._input = gameState.input = {
+      debug: 0,
       forward: false,
       backward: false,
       turnLeft: false,
       turnRight: false
     };
 
-    this._bindOnOff("up", "forward");
-    this._bindOnOff("down", "backward");
-    this._bindOnOff("left", "turnLeft");
-    this._bindOnOff("right", "turnRight");
+    this._bindPress("~", "debug")
+    this._bindHold("up", "forward");
+    this._bindHold("down", "backward");
+    this._bindHold("left", "turnLeft");
+    this._bindHold("right", "turnRight");
+
+    this._queued = {};
   }
 
-  tick(dt) {}
+  tick(dt) {
+    forEach(this._queued, (activate, inputName) => {
+      this._input[inputName] = activate;
+      if (activate) {
+        this._queued[inputName] = false;
+      }
+    });
+  }
 
-  _bindOnOff(key, inputName) {
+  _bindPress(key, inputName) {
+    Mousetrap.bind(key, () => {
+      this._queued[inputName] = true;
+    });
+  }
+
+  _bindHold(key, inputName) {
     Mousetrap.bind(key, () => {
       this._input[inputName] = true;
       return false;
