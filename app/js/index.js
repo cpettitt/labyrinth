@@ -8,7 +8,7 @@ require("../css/main.css");
 const mapStr = [
   "         ",
   " xxx xxx ",
-  " x   x x ",
+  " xv  x x ",
   " x   xxx ",
   " x   x   ",
   " xxx x   ",

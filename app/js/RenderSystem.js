@@ -17,14 +17,17 @@ class RenderSystem {
     this._onResize();
 
     this._gameState = gameState;
-    console.log(this._gameState.width, this._gameState.height);
     this._ground = this._createGround();
     this._hemiLight = this._createHemiLight();
     this._shadowLight = this._createShadowLight();
+    this._player = this._createPlayer();
     this._createWalls();
   }
 
   tick(dt) {
+    const player = this._gameState.player;
+    this._player.position.set(player.position.x, 0, player.position.y);
+    this._player.rotation.y = player.rotation;
     this._renderer.render(this.scene, this._camera);
   }
 
@@ -106,6 +109,25 @@ class RenderSystem {
         }
       }
     }
+  }
+
+  _createPlayer() {
+    const shape = new THREE.Shape();
+    shape.moveTo(0, .3);
+    shape.lineTo(.1, 0);
+    shape.lineTo(-.1, 0);
+    shape.lineTo(0, .3);
+
+    const geo = shape.extrude({ amount: 0.1, bevelEnabled: false });
+    geo.rotateX(-Math.PI * 0.5);
+    geo.translate(0, 0, 0.1);
+
+    const mat = new THREE.MeshPhongMaterial({ color: 0x66ff99 });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    this.scene.add(mesh);
+    return mesh;
   }
 }
 
