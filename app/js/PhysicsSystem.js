@@ -21,6 +21,54 @@ class PhysicsSystem {
     player.angularVelocity = turnLeftRight * player.turnRate;
 
     player.bbox = this._computePlayerBBox();
+
+    this._checkCollisions(player.bbox);
+  }
+
+  _checkCollisions(playerBBox) {
+    // TODO smarter broadphase
+    const gs = this._gameState;
+    for (let x = 0; x < gs.width; ++x) {
+      for (let y = 0; y < gs.height; ++y) {
+        const cellData = gs.getCellData(x, y);
+        cellData.isCollision = false;
+        if (!cellData.isWalkable) {
+          const overlap = this._checkAABBCollision(cellData.bbox, playerBBox);
+          if (overlap) {
+            cellData.isCollision = true;
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Return a vector that indicates where to move boxB so that it is not
+   * colliding with boxA or return `undefined` if there is no collision.
+   */
+  _checkAABBCollision(boxA, boxB) {
+    const centerDelta = boxA.center().sub(boxB.center());
+    const overlap = boxA.size().add(boxB.size())
+                        .multiplyScalar(0.5)
+                        .sub(vec2Abs(centerDelta));
+
+    if (overlap.x <= 0 || overlap.y <= 0) {
+      return;
+    }
+
+    // No separating axis, so figure out the projection vector
+    if (overlap.x < overlap.y) {
+      if (centerDelta.x < 0) {
+        overlap.x = -overlap.x;
+      }
+      overlap.y = 0;
+    } else {
+      overlap.x = 0;
+      if (centerDelta.y < 0) {
+        overlap.y = -overlap.y;
+      }
+    }
+    return overlap;
   }
 
   _computePlayerBBox() {
@@ -37,6 +85,12 @@ class PhysicsSystem {
     bbox.translate(position);
     return bbox;
   }
+}
+
+function vec2Abs(vec) {
+  vec.x = Math.abs(vec.x);
+  vec.y = Math.abs(vec.y);
+  return vec;
 }
 
 export default PhysicsSystem;

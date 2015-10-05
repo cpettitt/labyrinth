@@ -24,7 +24,10 @@ class GameState {
         const cell = rowStrs[y][x];
         this._cellData[x][y] = {
           isWalkable: cell !== "x",
-          isWall: cell === "x"
+          isWall: cell === "x",
+          bbox: new THREE.Box2(new THREE.Vector2(x - 0.5, y - 0.5),
+                               new THREE.Vector2(x + 0.5, y + 0.5)),
+          isCollision: false
         };
 
         switch (cell) {
