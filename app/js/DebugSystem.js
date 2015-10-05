@@ -9,8 +9,8 @@ class DebugSystem extends EventEmitter {
     this._gameState = gameState;
     this._scene = scene;
 
-    const player = gameState.player;
-    this._playerBBox = new PlayerBBox(player);
+    this._playerBBox = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1),
+        new THREE.MeshBasicMaterial({ color: 0x999999, wireframe: true }));
   }
 
   tick(dt) {
@@ -19,7 +19,12 @@ class DebugSystem extends EventEmitter {
     }
 
     if (this.isEnabled) {
-      this._playerBBox.update();
+      const player = this._gameState.player;
+      const size = player.bbox.size();
+      const center = player.bbox.center();
+      this._playerBBox.scale.set(size.x, 1, size.y);
+      this._playerBBox.position.set(center.x, 0, center.y);
+      console.log(this._playerBBox);
     }
   }
 
@@ -41,30 +46,6 @@ class DebugSystem extends EventEmitter {
     this.isEnabled = false;
     this._scene.remove(this._playerBBox);
     this.emit("disabled");
-  }
-}
-
-class PlayerBBox extends THREE.Mesh {
-  constructor(player) {
-    super(new THREE.BoxGeometry(1, 1, 1),
-          new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true }));
-    this._player = player;
-  }
-
-  update() {
-    const position = new THREE.Vector3(this._player.position.x, 0, this._player.position.y);
-    const geometry = this._player.geometry.clone();
-
-    // TODO the need to null out bounding containers seems to be a bug in three.js
-    geometry.boundingBox = null;
-    geometry.boundingSphere = null;
-    // END
-
-    geometry.rotateY(this._player.rotation);
-    geometry.computeBoundingBox();
-    const box = geometry.boundingBox.translate(position);
-    box.size(this.scale);
-    box.center(this.position);
   }
 }
 
