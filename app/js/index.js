@@ -1,10 +1,22 @@
 import DebugSystem from "./DebugSystem";
+import GameState from "./GameState";
 import RenderSystem from "./RenderSystem";
 import Stats from "stats.js";
 
 require("../css/main.css");
 
-const renderSystem = new RenderSystem(document.body);
+const mapStr = [
+  "         ",
+  " xxx xxx ",
+  " x   x x ",
+  " x   xxx ",
+  " x   x   ",
+  " xxx x   ",
+  "         "
+].join("\n");
+
+const gameState = new GameState(mapStr);
+const renderSystem = new RenderSystem(gameState);
 const debugSystem = new DebugSystem();
 
 const stats = new Stats();
