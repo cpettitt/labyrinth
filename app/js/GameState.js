@@ -8,7 +8,7 @@ class GameState {
     this.height = rowStrs.length;
 
     const player = this.player = {
-      size: new THREE.Vector2(0.2, 0.3),
+      geometry: this._createPlayerGeometry(new THREE.Vector2(0.2, 0.3)),
       position: new THREE.Vector2(),
       rotation: 0,
       velocity: 0,
@@ -51,6 +51,20 @@ class GameState {
 
   getCellData(gridX, gridY) {
     return this._cellData[gridX][gridY];
+  }
+
+  _createPlayerGeometry(size) {
+    const shape = new THREE.Shape();
+    shape.moveTo(0, size.y);
+    shape.lineTo(size.x * 0.5, 0);
+    shape.lineTo(-size.x * 0.5, 0);
+    shape.lineTo(0, size.y);
+
+    const geo = shape.extrude({ amount: 0.1, bevelEnabled: false });
+    geo.rotateX(-Math.PI * 0.5);
+    geo.translate(0, 0, size.y / 3);
+
+    return geo;
   }
 }
 
