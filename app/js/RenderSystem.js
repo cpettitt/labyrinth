@@ -112,15 +112,17 @@ class RenderSystem {
   }
 
   _createPlayer() {
+    const player = this._gameState.player;
+
     const shape = new THREE.Shape();
-    shape.moveTo(0, .3);
-    shape.lineTo(.1, 0);
-    shape.lineTo(-.1, 0);
-    shape.lineTo(0, .3);
+    shape.moveTo(0, player.size.y);
+    shape.lineTo(player.size.x * 0.5, 0);
+    shape.lineTo(-player.size.x * 0.5, 0);
+    shape.lineTo(0, player.size.y);
 
     const geo = shape.extrude({ amount: 0.1, bevelEnabled: false });
     geo.rotateX(-Math.PI * 0.5);
-    geo.translate(0, 0, 0.1);
+    geo.translate(0, 0, player.size.y / 3);
 
     const mat = new THREE.MeshPhongMaterial({ color: 0x66ff99 });
     const mesh = new THREE.Mesh(geo, mat);
