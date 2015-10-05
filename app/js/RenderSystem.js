@@ -4,6 +4,8 @@ class RenderSystem {
   constructor(gameState) {
     this._renderer = new THREE.WebGLRenderer();
     this._renderer.setPixelRatio(window.devicePixelRatio || 1);
+    this._renderer.shadowMap.enabled = true;
+    this._renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     document.body.appendChild(this._renderer.domElement);
 
     this.scene = new THREE.Scene();
@@ -18,6 +20,7 @@ class RenderSystem {
     console.log(this._gameState.width, this._gameState.height);
     this._ground = this._createGround();
     this._hemiLight = this._createHemiLight();
+    this._shadowLight = this._createShadowLight();
     this._createWalls();
   }
 
@@ -37,13 +40,34 @@ class RenderSystem {
     const mesh = new THREE.Mesh(geo, mat);
     mesh.rotation.x = -Math.PI * 0.5;
     mesh.position.set((this._gameState.width - 1) * 0.5, -0.5, (this._gameState.height - 1) * 0.5);
+    mesh.receiveShadow = true;
     this.scene.add(mesh);
     return mesh;
   }
 
   _createHemiLight() {
-    const light = new THREE.HemisphereLight(0xffffbb, 0xa3845c, 1.2);
+    const light = new THREE.HemisphereLight(0xffffbb, 0xa3845c, 1.1);
     light.position.set(0, 10, 0);
+    this.scene.add(light);
+    return light;
+  }
+
+  _createShadowLight() {
+    const light = new THREE.DirectionalLight();
+    light.position.set(2.5, 5, 3.5);
+    light.lookAt(new THREE.Vector3(4.5, 0, 3.5));
+    light.shadowMapWidth = 1024;
+    light.shadowMapHeight = 1024;
+    light.shadowDarkness = 0.3;
+    light.shadowCameraNear = 0.1;
+    light.shadowCameraFar = 10;
+    light.shadowCameraTop = 10;
+    light.shadowCameraBottom = -10;
+    light.shadowCameraRight = 10;
+    light.shadowCameraLeft = -10;
+    light.castShadow = true;
+    light.onlyShadow = true;
+    // light.shadowCameraVisible = true;
     this.scene.add(light);
     return light;
   }
@@ -74,7 +98,9 @@ class RenderSystem {
           if (y > 0 && !state.getCellData(x, y - 1).isWall) { geo.merge(nz); }
 
           const mesh = new THREE.Mesh(geo, mat);
-          mesh.position.set(x, 0.5, y);
+          mesh.position.set(x, 0, y);
+          mesh.castShadow = true;
+          mesh.receiveShadow = true;
           cellData.meshId = mesh.id;
           this.scene.add(mesh);
         }
