@@ -23,8 +23,8 @@ class GameState {
       for (let y = 0; y < this.height; ++y) {
         const cell = rowStrs[y][x];
         this._cellData[x][y] = {
-          isWalkable: cell !== "x",
-          isWall: cell === "x",
+          isWalkable: cell !== "#",
+          isWall: cell === "#",
           bbox: new THREE.Box2(new THREE.Vector2(x - 0.5, y - 0.5),
                                new THREE.Vector2(x + 0.5, y + 0.5)),
           isCollision: false

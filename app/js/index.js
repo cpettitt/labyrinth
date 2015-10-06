@@ -8,13 +8,15 @@ import Stats from "stats.js";
 require("../css/main.css");
 
 const mapStr = [
-  "         ",
-  " xxx xxx ",
-  " xv  x x ",
-  " x   xxx ",
-  " x   x   ",
-  " xxx x   ",
-  "         "
+  "###########",
+  "#         #",
+  "# ### ### #",
+  "# #v  # # #",
+  "# #   ### #",
+  "# #   #   #",
+  "# ### #   #",
+  "#         #",
+  "###########",
 ].join("\n");
 
 const gameState = new GameState(mapStr);
