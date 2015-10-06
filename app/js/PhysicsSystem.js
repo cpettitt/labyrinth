@@ -46,7 +46,12 @@ class PhysicsSystem {
     if (collisionVectors.length) {
       const resolution = new THREE.Vector2();
       collisionVectors.forEach(v => {
-        resolution.add(v);
+        if (Math.abs(resolution.x) < Math.abs(v.x)) {
+          resolution.x = v.x;
+        }
+        if (Math.abs(resolution.y) < Math.abs(v.y)) {
+          resolution.y = v.y;
+        }
       });
       this._gameState.player.position.sub(resolution);
     }
