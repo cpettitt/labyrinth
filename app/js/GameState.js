@@ -63,7 +63,7 @@ class GameState {
     shape.lineTo(-size.x * 0.5, 0);
     shape.lineTo(0, size.y);
 
-    const geo = shape.extrude({ amount: 0.1, bevelEnabled: false });
+    const geo = shape.extrude({ amount: 0.05, bevelEnabled: false });
     geo.rotateX(-Math.PI * 0.5);
     geo.translate(0, 0, size.y / 3);
 
