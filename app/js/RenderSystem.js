@@ -10,8 +10,8 @@ class RenderSystem {
 
     this.scene = new THREE.Scene();
     this._camera = new THREE.PerspectiveCamera(45, null, 0.1, 100);
-    this._camera.position.set(4.5, 10, 3.6);
-    this._camera.lookAt(new THREE.Vector3(4.5, 0, 3.5));
+    this._camera.position.set(0, 2, 2);
+    this._camera.lookAt(new THREE.Vector3(0, 0.25, -0.5));
 
     window.addEventListener("resize", () => this._onResize());
     this._onResize();
@@ -22,6 +22,8 @@ class RenderSystem {
     this._shadowLight = this._createShadowLight();
     this._player = this._createPlayer();
     this._createWalls();
+
+    this._player.add(this._camera);
   }
 
   tick(dt) {
@@ -59,8 +61,8 @@ class RenderSystem {
     const light = new THREE.DirectionalLight();
     light.position.set(2.5, 5, 3.5);
     light.lookAt(new THREE.Vector3(4.5, 0, 3.5));
-    light.shadowMapWidth = 1024;
-    light.shadowMapHeight = 1024;
+    light.shadowMapWidth = 2048;
+    light.shadowMapHeight = 2048;
     light.shadowDarkness = 0.3;
     light.shadowCameraNear = 0.1;
     light.shadowCameraFar = 10;
