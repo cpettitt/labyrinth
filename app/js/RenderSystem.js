@@ -59,17 +59,23 @@ class RenderSystem {
 
   _createShadowLight() {
     const light = new THREE.DirectionalLight();
-    light.position.set(2.5, 5, 3.5);
-    light.lookAt(new THREE.Vector3(4.5, 0, 3.5));
+
+    light.position.set(0, 10, 0);
+
+    // Set up a target at which to orient the light
+    light.target = new THREE.Object3D();
+    light.target.position.set(this._gameState.width * 0.3, 0, this._gameState.height * 0.3);
+    this.scene.add(light.target);
+
     light.shadowMapWidth = 2048;
     light.shadowMapHeight = 2048;
     light.shadowDarkness = 0.3;
     light.shadowCameraNear = 0.1;
-    light.shadowCameraFar = 10;
-    light.shadowCameraTop = 10;
-    light.shadowCameraBottom = -10;
-    light.shadowCameraRight = 10;
-    light.shadowCameraLeft = -10;
+    light.shadowCameraFar = Math.max(this._gameState.width, this._gameState.height) + light.position.y;
+    light.shadowCameraTop = Math.max(this._gameState.width, this._gameState.height);
+    light.shadowCameraBottom = -Math.max(this._gameState.width, this._gameState.height);
+    light.shadowCameraRight = Math.max(this._gameState.width, this._gameState.height);
+    light.shadowCameraLeft = -Math.max(this._gameState.width, this._gameState.height);
     light.castShadow = true;
     light.onlyShadow = true;
     // light.shadowCameraVisible = true;
