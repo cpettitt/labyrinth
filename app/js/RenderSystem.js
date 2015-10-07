@@ -9,9 +9,16 @@ class RenderSystem {
     document.body.appendChild(this._renderer.domElement);
 
     this.scene = new THREE.Scene();
-    this._camera = new THREE.PerspectiveCamera(60, null, 0.1, 20);
-    this._camera.position.set(0, 5, 3);
-    this._camera.lookAt(new THREE.Vector3(0, 0.25, -0.5));
+
+    // Camera follows player's rotation
+    this._camera1 = new THREE.PerspectiveCamera(60, null, 0.1, 20);
+    this._camera1.position.set(0, 5, 3);
+    this._camera1.lookAt(new THREE.Vector3(0, 0.25, -0.5));
+
+    // Fixed rotation, but follow player
+    this._camera2 = new THREE.PerspectiveCamera(45, null, 0.1, 20);
+
+    this._currentCamera = 0;
 
     window.addEventListener("resize", () => this._onResize());
     this._onResize();
@@ -23,20 +30,30 @@ class RenderSystem {
     this._player = this._createPlayer();
     this._createWalls();
 
-    this._player.add(this._camera);
+    this._player.add(this._camera1);
   }
 
   tick(dt) {
     const player = this._gameState.player;
     this._player.position.set(player.position.x, 0, player.position.y);
     this._player.rotation.y = player.rotation;
-    this._renderer.render(this.scene, this._camera);
+
+    if (this._gameState.input.toggleCamera) {
+      this._currentCamera++;
+    }
+
+    this._camera2.position.set(0, 6, 2).add(this._player.position);
+    this._camera2.lookAt(this._player.position);
+
+    this._renderer.render(this.scene, this["_camera" + (this._currentCamera % 2 + 1)]);
   }
 
   _onResize() {
     this._renderer.setSize(window.innerWidth, window.innerHeight);
-    this._camera.aspect = window.innerWidth / window.innerHeight;
-    this._camera.updateProjectionMatrix();
+    this._camera1.aspect = window.innerWidth / window.innerHeight;
+    this._camera1.updateProjectionMatrix();
+    this._camera2.aspect = window.innerWidth / window.innerHeight;
+    this._camera2.updateProjectionMatrix();
   }
 
   _createGround() {

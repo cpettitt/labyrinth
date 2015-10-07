@@ -4,14 +4,16 @@ import Mousetrap from "mousetrap";
 class InputSystem {
   constructor(gameState) {
     this._input = gameState.input = {
-      debug: 0,
+      debug: false,
       forward: false,
       backward: false,
       turnLeft: false,
-      turnRight: false
+      turnRight: false,
+      toggleCamera: false
     };
 
-    this._bindPress("~", "debug")
+    this._bindPress("~", "debug");
+    this._bindPress("c", "toggleCamera")
     this._bindHold("up", "forward");
     this._bindHold("down", "backward");
     this._bindHold("left", "turnLeft");
