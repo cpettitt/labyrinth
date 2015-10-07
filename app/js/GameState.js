@@ -12,7 +12,7 @@ class GameState {
       position: new THREE.Vector2(),
       rotation: 0,
       velocity: 0,
-      moveRate: 3,
+      moveRate: 3.5,
       angularVelocity: 0,
       turnRate: 2 * Math.PI,
     };
