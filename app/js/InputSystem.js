@@ -14,6 +14,10 @@ class InputSystem {
 
     this._bindPress("~", "debug");
     this._bindPress("c", "toggleCamera")
+    this._bindHold("w", "forward");
+    this._bindHold("s", "backward");
+    this._bindHold("a", "turnLeft");
+    this._bindHold("d", "turnRight");
     this._bindHold("up", "forward");
     this._bindHold("down", "backward");
     this._bindHold("left", "turnLeft");
