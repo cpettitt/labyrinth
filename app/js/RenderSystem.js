@@ -4,7 +4,7 @@ class RenderSystem {
   constructor(gameState) {
     this._renderer = new THREE.WebGLRenderer();
     this._renderer.setPixelRatio(window.devicePixelRatio || 1);
-    this._renderer.shadowMap.enabled = true;
+    this._renderer.shadowMap.enabled = false;
     this._renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     document.body.appendChild(this._renderer.domElement);
 
