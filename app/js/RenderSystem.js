@@ -6,6 +6,7 @@ class RenderSystem {
     this._renderer.setPixelRatio(window.devicePixelRatio || 1);
     this._renderer.shadowMap.enabled = false;
     this._renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this._renderer.setClearColor(0, 1);
     document.body.appendChild(this._renderer.domElement);
 
     this.scene = new THREE.Scene();
