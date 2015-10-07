@@ -96,11 +96,11 @@ class RenderSystem {
         if (cellData.isWall) {
           const geo = new THREE.Geometry();
 
-          if (x + 1 < state.width && !state.getCellData(x + 1, y).isWall) { geo.merge(px); }
-          if (x > 0 && !state.getCellData(x - 1, y).isWall) { geo.merge(nx); }
+          if (x + 1 === state.width || !state.getCellData(x + 1, y).isWall) { geo.merge(px); }
+          if (!x || !state.getCellData(x - 1, y).isWall) { geo.merge(nx); }
           geo.merge(py);
-          if (y + 1 < state.height && !state.getCellData(x, y + 1).isWall) { geo.merge(pz); }
-          if (y > 0 && !state.getCellData(x, y - 1).isWall) { geo.merge(nz); }
+          if (y + 1 === state.height || !state.getCellData(x, y + 1).isWall) { geo.merge(pz); }
+          if (!y || !state.getCellData(x, y - 1).isWall) { geo.merge(nz); }
 
           const mesh = new THREE.Mesh(geo, mat);
           mesh.position.set(x, 0, y);
