@@ -1,23 +1,14 @@
 import DebugSystem from "./DebugSystem";
 import GameState from "./GameState";
 import InputSystem from "./InputSystem";
+import MapBuilder from "./MapBuilder";
 import PhysicsSystem from "./PhysicsSystem";
 import RenderSystem from "./RenderSystem";
 import Stats from "stats.js";
 
 require("../css/main.css");
 
-const mapStr = [
-  "###########",
-  "#         #",
-  "# ### ### #",
-  "# #v  # # #",
-  "# #   ### #",
-  "# #   #   #",
-  "# ### #   #",
-  "#         #",
-  "###########",
-].join("\n");
+const mapStr = new MapBuilder(10, 10).build();
 
 const gameState = new GameState(mapStr);
 const renderSystem = new RenderSystem(gameState);
