@@ -9,8 +9,8 @@ class RenderSystem {
     document.body.appendChild(this._renderer.domElement);
 
     this.scene = new THREE.Scene();
-    this._camera = new THREE.PerspectiveCamera(45, null, 0.1, 100);
-    this._camera.position.set(0, 2, 2);
+    this._camera = new THREE.PerspectiveCamera(60, null, 0.1, 20);
+    this._camera.position.set(0, 5, 3);
     this._camera.lookAt(new THREE.Vector3(0, 0.25, -0.5));
 
     window.addEventListener("resize", () => this._onResize());
