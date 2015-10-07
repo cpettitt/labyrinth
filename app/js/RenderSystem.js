@@ -16,7 +16,7 @@ class RenderSystem {
     this._camera1.lookAt(new THREE.Vector3(0, 0.25, -0.5));
 
     // Fixed rotation, but follow player
-    this._camera2 = new THREE.PerspectiveCamera(45, null, 0.1, 20);
+    this._camera2 = new THREE.PerspectiveCamera(60, null, 0.1, 20);
 
     this._currentCamera = 0;
 
@@ -42,7 +42,7 @@ class RenderSystem {
       this._currentCamera++;
     }
 
-    this._camera2.position.set(0, 6, 2).add(this._player.position);
+    this._camera2.position.set(0, 5, 3).add(this._player.position);
     this._camera2.lookAt(this._player.position);
 
     this._renderer.render(this.scene, this["_camera" + (this._currentCamera % 2 + 1)]);
